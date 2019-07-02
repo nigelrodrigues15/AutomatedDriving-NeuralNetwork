@@ -54,7 +54,7 @@ def telemetry(sid, data):
             idx = np.argmax(prediction)
 
             # Number of desired bins -> Number of labels.
-            num_bins = 20
+            num_bins = 100
 
             # Corresponding intervals for the number of bins.
             interval = 2.0/num_bins
@@ -64,7 +64,7 @@ def telemetry(sid, data):
             inc = -1
             bins = []
             while inc <= 1:
-                inc = round(inc, 1)
+                inc = round(inc, 2)
                 bins.append(inc)
                 inc += interval
 
