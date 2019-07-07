@@ -63,9 +63,13 @@ def telemetry(sid, data):
 
             # predict the steering angle for the image
             # Convert 3D data array to 4D tensor with 3 channels, (Fake RGB).
-            imageX = image[:,60:145, :, :]/255.0
+            imageX = image[:,60:140, :, :]/255.0
+            mul= np.array([0.3,0.59,0.11])
+            imageX= np.matmul(imageX,np.transpose(mul))
 
-            # print(imageX.shape)
+            imageX = np.repeat(imageX[..., np.newaxis], 3, -1)
+            print(imageX.shape)
+
             prediction = model.predict(imageX, batch_size=1)
             idx = np.argmax(prediction)
 
