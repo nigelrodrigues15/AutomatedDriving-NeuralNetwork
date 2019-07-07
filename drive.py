@@ -12,6 +12,10 @@ import eventlet.wsgi
 from PIL import Image
 from flask import Flask
 from io import BytesIO
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import matplotlib.image as img
 
 from keras.models import load_model
 
@@ -25,6 +29,8 @@ MIN_SPEED = 10
 
 speed_limit = MAX_SPEED
 
+
+
 @sio.on('telemetry')
 def telemetry(sid, data):
     if data:
@@ -36,6 +42,7 @@ def telemetry(sid, data):
         speed = float(data["speed"])
         # The current image from the center camera of the car
         image = Image.open(BytesIO(base64.b64decode(data["image"])))
+        imon = 1
         # save frame
         if args.image_folder != '':
             timestamp = datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S_%f')[:-3]
@@ -46,9 +53,18 @@ def telemetry(sid, data):
             image = np.asarray(image)       # from PIL image to numpy array
             image = np.array([image])       # the model expects 4D array
 
+            # if imon == 1:
+            #     # cam = img.imread(image)
+            #     # fig = plt.figure()
+            #     plt.imshow(image[0])
+            #     imon += 1
+            #     plt.show()
+
+
             # predict the steering angle for the image
             # Convert 3D data array to 4D tensor with 3 channels, (Fake RGB).
             imageX = image[:,60:145, :, :]/255.0
+
             # print(imageX.shape)
             prediction = model.predict(imageX, batch_size=1)
             idx = np.argmax(prediction)
