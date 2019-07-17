@@ -54,7 +54,7 @@ with open(logName) as csv_file:
 print(imgSet[1])
 
 # Converting images to numpy arrays
-width, height = 320, 85
+width, height = 320, 80
 
 # labels, Y
 Y = steering
@@ -77,7 +77,7 @@ for imgName in imgSet:
     # image = rgb2gray(image)
 
     # Normalize values
-    X[counter,:,:] = image[60:145,:,:]/255.0
+    X[counter,:,:] = image[60:140,:,:]/255.0
     X[counter + len(Y), :, :] = cv2.flip(X[counter, :, :], 1)
 
     counter += 1
@@ -92,7 +92,7 @@ Y = np.array(Y_new)
 
 
 # Split the dataset into training, validation, and testing subsets.
-X_half1, X_half2, y_half1, y_half2 = train_test_split(X, Y, test_size=0.50, random_state=99)
+X_half1, X_half2, y_half1, y_half2 = train_test_split(X, Y, test_size=0.65, random_state=99)
 
 X_train, X_test, y_train, y_test = train_test_split(X_half1, y_half1, test_size=0.30, random_state=42)
 X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size = 0.50, random_state=30)
